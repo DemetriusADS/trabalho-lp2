@@ -10,7 +10,7 @@ public class PassageiroUtil {
         boolean found = false;
         int count = 0;
         while(count < this.passageiro.size() && !found){
-            if(this.passageiro.get(count).cpf == cpf){
+            if(this.passageiro.get(count).getCpf() == cpf){
                 index = count;
                 found = true;
             }
