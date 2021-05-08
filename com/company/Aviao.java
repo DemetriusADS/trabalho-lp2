@@ -1,5 +1,7 @@
 package com.company;
 
+import java.util.Objects;
+
 public class Aviao {
     public String nome;
     protected Passageiro[] assentos;
@@ -13,22 +15,42 @@ public class Aviao {
         return this.assentos.length;
     }
 
+    public int getAssentosLivres() {
+        int count = 0;
+
+        for (Passageiro assento : this.assentos) {
+            count += assento == null ? 1 : 0;
+        }
+
+        return count;
+    }
+
     public Passageiro[] getAssentosDetalhados(){
         return this.assentos;
     }
 
+    private int searchPassageiroByCpf(String cpf){
+        int counter = 0;
+        int index = -1;
+
+        while(counter < this.assentos.length){
+            if(this.assentos[counter] != null && Objects.equals(this.assentos[counter].getCpf(), cpf)){
+                index = counter;
+                return index;
+            }else{
+                counter ++;
+            }
+        }
+        return index;
+    }
+
     public boolean reservarAssento(int assento, Passageiro passageiro) throws Exception {
-        boolean found = false;
+        boolean found;
         int counter = 0;
 
         if(this.assentos[assento - 1] == null){
 
-            while(this.assentos.length > counter && !found){
-                if(this.assentos[counter] != null && this.assentos[counter].cpf == passageiro.cpf){
-                        found = true;
-                }
-                counter ++;
-            }
+            found = this.searchPassageiroByCpf(passageiro.getCpf()) > -1;
 
             if(!found){
                 this.assentos[assento - 1] = passageiro;
@@ -38,5 +60,15 @@ public class Aviao {
             }
         }
         throw new Exception("Assento já ocupado.");
+    }
+
+    public void cancelarReserva(Passageiro passageiro) throws  Exception{
+        int index = this.searchPassageiroByCpf(passageiro.getCpf());
+
+        if(index == -1){
+            throw new Exception("Passageiro não encontrado neste vôo");
+        }
+
+        this.assentos[index] = null;
     }
 }

@@ -50,4 +50,16 @@ public class Voo {
             throw new Exception(e.getMessage());
         }
     }
+
+    public int getAssentosLivres(){
+        return this.aviao.getAssentosLivres();
+    }
+
+    public void cancelarReserva(Passageiro passageiro) throws Exception {
+        try{
+            this.aviao.cancelarReserva(passageiro);
+        }catch(Exception e){
+            throw new Exception(e.getMessage());
+        }
+    }
 }
