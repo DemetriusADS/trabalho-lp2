@@ -62,4 +62,9 @@ public class Estatisticas {
     public float getPercentualTotal() {
         return this.percentualTotal;
     }
+
+    public Passageiro[] getReservas(Voo voo){
+        return voo.getReservas();
+
+    }
 }

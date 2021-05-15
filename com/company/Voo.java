@@ -62,4 +62,8 @@ public class Voo {
             throw new Exception(e.getMessage());
         }
     }
+
+    public Passageiro[] getReservas(){
+        return this.aviao.getReservas();
+    }
 }

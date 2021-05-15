@@ -71,4 +71,17 @@ public class Aviao {
 
         this.assentos[index] = null;
     }
+
+    public Passageiro[] getReservas(){
+        int assentosComReserva = this.getAssentos() - this.getAssentosLivres();
+        Passageiro[] passageiros = new Passageiro[this.getAssentos() - this.getAssentosLivres()];
+        int indexAux = 0;
+        for(Passageiro assento : this.assentos){
+            if(assento != null){
+                passageiros[indexAux] = assento;
+                indexAux++;
+            }
+        }
+        return passageiros;
+    }
 }

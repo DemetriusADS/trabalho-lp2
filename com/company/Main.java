@@ -74,6 +74,19 @@ public class Main {
 				System.out.println("Assentos: "+voos[0].getAssentosComDetalhes()[i]);
 			}
 
+			//Passando o index do voo, irá retornar todas as reservas.
+			//Se der um .length, será possivel obter a quantidade de reserva do voo;
+			Passageiro[] passageiros = estatisticas.getReservas(voos[0]);
+
+			//Detalhamento do voo;
+			for(Passageiro reserva : passageiros){
+				System.out.println(reserva.getCpf());
+				System.out.println(reserva.categoria);
+				System.out.println(reserva.nomeCompleto);
+			}
+
+
+
 		} catch (Exception e) {
 			System.out.println("ERROR: " + e.getMessage());
 		}
