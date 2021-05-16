@@ -12,7 +12,7 @@ public class PassageiroUtil {
         
         while(count < this.passageiro.size() && !found){
         	System.out.println(this.passageiro.get(count).getCpf() + " == " +  cpf );
-            if(this.passageiro.get(count).getCpf() == cpf){
+            if(this.passageiro.get(count).getCpf().equals(cpf)){
                 index = count;
                 found = true;
             }
