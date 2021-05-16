@@ -63,8 +63,8 @@ public class Estatisticas {
         return this.percentualTotal;
     }
 
-    public Passageiro[] getReservas(Voo voo){
-        return voo.getReservas();
+    public Passageiro[] getReservas(){
+        return this.voo.getReservas();
 
     }
 }
