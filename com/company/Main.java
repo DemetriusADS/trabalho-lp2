@@ -1,19 +1,13 @@
 package com.company;
 
-import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 
-import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.JTextField;
@@ -52,6 +46,19 @@ public class Main implements ActionListener{
 	private static JTextField inputAssentoReserva;
 	private static JLabel respostaReserva;
 	
+	private static JLabel lbTituloCancela;
+	private static JLabel lbCpfCancelaReserva;
+	private static JTextField inputCpfCancelaReserva;
+	private static JButton buttonCancelaReserva;
+	private static JLabel lbResultadoCancela;
+	private static JComboBox inputSelecionaCancelamento;
+	
+	private static JLabel lbTituloLista;
+	private static JComboBox lbInputVooEstatistica;
+	private static JLabel Reserva01;
+	private static JLabel Reserva02;
+	private static JLabel Reserva03;
+	
 	private static PassageiroUtil passageiro;
 	private static Estatisticas estatisticasVoo;
 	private static Estatisticas estatisticasVooNovo;
@@ -76,6 +83,7 @@ public class Main implements ActionListener{
     public static void main(String[] args) {
     	String[] tipos = {"Adulto","Crianca","Adolecente"};
     	String[] nrVoos = {"1797","4163","1865","4164"}; 
+    	String[] tabela = {"Nome","Cpf","Categoria"}; 
     	
     	
     	passageiro = new PassageiroUtil();
@@ -97,9 +105,9 @@ public class Main implements ActionListener{
 	    
 	    //COMO CADASTRAR PASSAGEIROS
 		passageiro.setPassageiro("11111111111", "Demetrius Araujo", "Adulto");
-		passageiro.setPassageiro("11111111112", "Demetrius Araujo", "Crianca");
-		passageiro.setPassageiro("11111111113", "Demetrius Araujo", "Adolescente");
-		passageiro.setPassageiro("11111111114", "Demetrius Araujo", "Idoso");
+		passageiro.setPassageiro("11111111112", "Pedro Americo", "Crianca");
+		passageiro.setPassageiro("11111111113", "David Amorim", "Adolescente");
+		passageiro.setPassageiro("11111111114", "Danilo Baitola", "Idoso");
 
 		try {
 			//COMO PUXAR AS INFORMAÃ‡OES DO PASSAGEIRO. SE ELE NAO ESTIVER CADASTRADO, SERÃ� DISPARADA UMA EXCEPTION
@@ -159,6 +167,8 @@ public class Main implements ActionListener{
 	    JPanel panelReserva = new JPanel();
 	    JPanel panelListaVoo = new JPanel();
 	    JPanel panelEstatisticas = new JPanel();
+	    JPanel panelCancelaReserva = new JPanel();
+	    JPanel panelListaReservas = new JPanel();
 	    JFrame frame = new JFrame();
 	    
 	    panelCadastroUsuario.setBounds(50, 0, 300,300);
@@ -172,6 +182,87 @@ public class Main implements ActionListener{
 	    
 	    panelReserva.setBounds(400, 0, 300, 300);
 	    panelReserva.setLayout(new GridLayout(10,1));
+	    
+	    panelCancelaReserva.setBounds(400, 300, 300, 300);
+	    panelCancelaReserva.setLayout(new GridLayout(6,1));
+	    
+	    panelListaReservas.setBounds(50, 700, 300, 300);
+	    panelListaReservas.setLayout(new GridLayout(10,1));
+	    
+	    
+	    //painel de Lista de Reservas
+	    
+	    lbTituloLista = new JLabel ("Lista de Reservas");
+	    panelListaReservas.add(lbTituloLista);
+	    
+	    lbInputVooEstatistica = new JComboBox(nrVoos);
+	    lbInputVooEstatistica.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				int nrVooInt = Integer.valueOf((String)lbInputVooEstatistica.getSelectedItem());
+				int index = searchVooIndex(voos,nrVooInt);
+				Passageiro[] passageiros = estatisticasVoo.getReservas();
+				for(Passageiro passageiross: passageiros) {
+					Reserva01.setText(passageiross.getnomeCompleto());
+					Reserva02.setText(passageiross.getnomeCompleto());
+					Reserva03.setText(passageiross.getnomeCompleto());
+				}
+				try {
+					System.out.println(passageiros);
+				}catch(Exception erro){
+					System.out.print(erro.getMessage());
+					respostaReserva.setText(erro.getMessage());
+				}	
+			}
+	    });
+	    panelListaReservas.add(lbInputVooEstatistica);
+	    
+	    Reserva01 = new JLabel("");
+	    panelListaReservas.add(Reserva01);
+	    
+	    Reserva02 = new JLabel("");
+	    panelListaReservas.add(Reserva02);
+	    
+	    Reserva03 = new JLabel("");
+	    panelListaReservas.add(Reserva03);
+	    
+	    
+	    //painel de cancelamento de reserva
+	    lbTituloCancela = new JLabel("Cancelamento da Reserva");
+	    panelCancelaReserva.add(lbTituloCancela);
+	    
+	    lbCpfCancelaReserva = new JLabel("Insira seu cpf pra cancelar sua Reserva");
+	    panelCancelaReserva.add(lbCpfCancelaReserva);
+	    
+	    inputCpfCancelaReserva = new JTextField(11);
+	    panelCancelaReserva.add(inputCpfCancelaReserva);
+	    
+	    inputSelecionaCancelamento = new JComboBox(nrVoos);
+	    panelCancelaReserva.add(inputSelecionaCancelamento);
+	    
+	    buttonCancelaReserva = new JButton("Cancelar reserva");
+	    buttonCancelaReserva.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				int nrVooInt = Integer.valueOf((String)inputSelecionaCancelamento.getSelectedItem());
+				int index = searchVooIndex(voos,nrVooInt);
+				try {
+					//System.out.println(inputCpfReserva.getText());
+					Passageiro currentPassageiroCancela = passageiro.getPassageiro(inputCpfCancelaReserva.getText());
+					voos[index].cancelarReserva(currentPassageiroCancela);
+					lbResultadoCancela.setText("Reserva Cancelada com Sucesso!");
+				}catch(Exception erro){
+					System.out.print(erro.getMessage());
+					lbResultadoCancela.setText(erro.getMessage());
+				}
+					
+			}
+	    });
+	    panelCancelaReserva.add(buttonCancelaReserva);
+	    
+	    lbResultadoCancela = new JLabel("");
+	    panelCancelaReserva.add(lbResultadoCancela);
+	    
 	    
 	    //painel de reserva
 	    
@@ -188,13 +279,15 @@ public class Main implements ActionListener{
 	    verificarPassageiro.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				int nrVooInt = Integer.valueOf((String)inputNrVooReserva.getSelectedItem());
+				int index = searchVooIndex(voos,nrVooInt);
 				try {
 					//System.out.println(inputCpfReserva.getText());
 					Passageiro currentPassageiroVoo = passageiro.getPassageiro(inputCpfReserva.getText());
 					respostaReserva.setText("Usuario Verificado!");
 				}catch(Exception erro){
 					System.out.print(erro.getMessage());
-					respostaReserva.setText("Algum erro aconteceu!");
+					respostaReserva.setText(erro.getMessage());
 				}
 					
 			}
@@ -229,7 +322,7 @@ public class Main implements ActionListener{
 					System.out.println("Reserva Realizada com sucesso");
 				}catch(Exception erro){
 					System.out.print(erro.getMessage());
-					respostaReserva.setText("Algum erro aconteceu!");
+					respostaReserva.setText(erro.getMessage());
 				}	
 			}
 	    });
@@ -330,6 +423,8 @@ public class Main implements ActionListener{
 	    frame.add(panelCadastroUsuario);
 	    frame.add(panelEstatisticas);
 	    frame.add(panelReserva);
+	    frame.add(panelCancelaReserva);
+	    frame.add(panelListaReservas);
 	    frame.add(panelListaVoo);
 	    
 	    frame.setVisible(true);

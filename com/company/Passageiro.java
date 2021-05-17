@@ -14,6 +14,10 @@ public class Passageiro {
     public String getCpf() {
         return this.cpf;
     }
+    
+    public String getnomeCompleto() {
+        return this.nomeCompleto;
+    }
 
     public void setCpf(String cpf) {
         this.cpf = cpf;
